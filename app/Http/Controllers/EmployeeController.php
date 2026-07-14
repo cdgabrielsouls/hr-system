@@ -63,24 +63,15 @@ switch (request('sort')) {
     'gender'          => 'nullable',
     'marital_status'  => 'nullable',
     'address'         => 'nullable',
-    'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    'profile_picture' => 'nullable|file',
 ]);
 
-
-
-$profilePicture = null;
 
 $imageName = null;
 
 if ($request->hasFile('profile_picture')) {
-
-    $imageName = time().'.'.$request->profile_picture->extension();
-
-    $request->profile_picture->move(
-        public_path('profile_pictures'),
-        $imageName
-    );
-
+    $imageName = time() . '.' . $request->file('profile_picture')->extension();
+    $request->file('profile_picture')->move(public_path('profile_pictures'), $imageName);
 }
 
 $lastEmployee = Employee::latest('id')->first();

@@ -457,10 +457,12 @@
     @csrf
     @method('DELETE')
 
+    @if(session('employee_role') === 'admin')
     <button type="submit"
         class="w-[218px] h-12 border border-[#5D8CFF] rounded-[10px] text-[15px] font-light cursor-pointer transition-all duration-250 shadow-[inset_0_2px_3px_rgba(61,49,49,.15),inset_0_8px_12px_rgba(255,255,255,.05)] bg-[#FF000420] text-white hover:bg-[#C0392B95]">
         DELETE
     </button>
+    @endif
 </form>
 
     </div>

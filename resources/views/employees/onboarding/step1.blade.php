@@ -301,10 +301,12 @@
 
 <input
     type="file"
-    id="profile_picture"
-    name="profile_picture"
-    accept="image/*"
+        id="profile_picture"
+        name="profile_picture"
+        accept="image/*"
+       enctype="multipart/form-data"
     class="hidden"
+
     onchange="previewImage(event)">
       </div>
 
