@@ -45,7 +45,7 @@
  
                 <div class="relative group">
                     <a href="/dashboard" class="text-white no-underline text-xl py-2.5 px-[18px] flex items-center gap-2 rounded-full transition-all duration-250 hover:text-[#66A6FF] hover:bg-[#1B3A6B] hover:-translate-y-px hover:font-bold active:scale-[.97]">
-                        Das
+                        Dashboard
                     </a>
                 </div>
  
