@@ -48,6 +48,8 @@ Route::prefix('onboarding')->name('onboarding.')->group(function () {
     Route::post('/step4', [EmployeeOnboardingController::class, 'storeStep4'])->name('storeStep4');
 
     Route::get('/success', [EmployeeOnboardingController::class, 'success'])->name('success');
+    
+    
 });
 
 
@@ -69,14 +71,23 @@ Route::post('/signin', [AuthController::class, 'login'])
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    Route::get('/employees', [EmployeeController::class, 'index'])
-        ->name('employees.index');
+        Route::get('/departments', [DepartmentController::class, 'index'])
+        ->name('departments.show');
 
     Route::get('/departments', [DepartmentController::class, 'index'])
         ->name('departments.index');
 
+        Route::get('/employees', [DepartmentController::class, 'index'])
+        ->name('employees.index');
+          
+        Route::get('/employees', [DepartmentController::class, 'index'])
+        ->name('employees.index');
+
+        
     // all onboarding routes
 });
+
+
 
 Route::get('/logout', [AuthController::class, 'logout'])
     ->name('logout');
