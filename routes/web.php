@@ -86,9 +86,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/departments/{slug}', [DepartmentController::class, 'show'])->name('departments.show');
 
 Route::get('/clockinout', function () {
-    return view('attendances.clockinout');
-});
-
+    return view('clockinout.index');
+})->name('clockinout');
 
 
 
@@ -110,3 +109,17 @@ Route::get('/reports-analytics/attendance-overview', function () {
     );
 
 })->name('reports-analytics.attendance-overview');
+
+
+
+Route::post('/clock-in', [AttendanceController::class, 'clockIn'])
+    ->name('clockinout.index');
+
+    Route::get('/attendance/today-count', function () {
+    return response()->json([
+        'count' => \App\Models\Attendance::whereDate(
+            'attendance_date',
+            today()
+        )->count()
+    ]);
+});

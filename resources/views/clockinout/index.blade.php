@@ -30,6 +30,11 @@
     #empID::placeholder {
         color: #9bb1d3;
     }
+
+    #attendanceBtn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+    }
 </style>
 </head>
 
@@ -58,14 +63,10 @@
                     <input
                         type="text"
                         id="empID"
+                        inputmode="numeric"
                         autocomplete="off"
                         class="flex-1 h-full border-none outline-none bg-transparent text-white text-base sm:text-2xl min-w-0">
                 </div>
-
-                <button id="attendanceBtn"
-                    class="w-full h-[80px] sm:h-[114px] border-none rounded-[7.9px] bg-[#132B52] text-white text-xl sm:text-[28.6px] font-normal cursor-pointer transition-colors duration-[250ms] mb-5 sm:mb-6 flex justify-center items-center hover:bg-[#0f2e59] disabled:hover:bg-[#6c757d]">
-                    ◴ Clock In
-                </button>
 
                 <div id="captureBtn"
                     class="w-full h-[50px] bg-[#173d73] text-white rounded-md flex justify-center items-center mb-5 text-base sm:text-xl cursor-pointer select-none">
@@ -79,8 +80,18 @@
 
                 <img id="photo" class="hidden w-full rounded-[10px] mt-5 mx-auto" alt="Captured attendance photo">
 
+                <button id="attendanceBtn" disabled
+                    class="w-full h-[80px] sm:h-[114px] border-none rounded-[7.9px] bg-[#132B52] text-white text-xl sm:text-[28.6px] font-normal cursor-pointer transition-colors duration-[250ms] mb-2 flex justify-center items-center hover:bg-[#0f2e59] disabled:hover:bg-[#132B52]">
+                    ◴ Clock In
+                </button>
+
+                <div id="requirementNote" class="text-sm sm:text-base text-[#6c757d] mb-5 sm:mb-6 text-center">
+                    Enter your Employee ID and capture a photo to enable Clock In.
+                </div>
+
                 <div class="text-lg sm:text-xl md:text-[22px] text-[#333] leading-relaxed text-left sm:text-center">
                     <div>Clock In Time: <span id="clockIn"></span></div>
+                    <div>Clock Out Time: <span id="clockOut"></span></div>
                 </div>
 
             </div>
@@ -117,15 +128,95 @@ updateClock();
 setInterval(updateClock,1000);
 
 let clockedIn=false;
+let photoCaptured=false;
 
 const btn=document.getElementById("attendanceBtn");
+const empIDInput=document.getElementById("empID");
+const requirementNote=document.getElementById("requirementNote");
+
+function checkRequirements(){
+
+    const idFilled = empIDInput.value.trim() !== "";
+
+    if(idFilled && photoCaptured){
+        btn.disabled = false;
+        requirementNote.innerHTML = "";
+    }else{
+        btn.disabled = true;
+
+        if(!idFilled && !photoCaptured){
+            requirementNote.innerHTML = "Enter your Employee ID and capture a photo to enable Clock In.";
+        }else if(!idFilled){
+            requirementNote.innerHTML = "Enter your Employee ID to enable Clock In.";
+        }else{
+            requirementNote.innerHTML = "Capture a photo to enable Clock In.";
+        }
+    }
+
+}
+
+empIDInput.addEventListener("input", function(){
+
+    // Numbers only — strip anything that isn't a digit
+    const cleaned = empIDInput.value.replace(/[^0-9]/g, "");
+
+    if(empIDInput.value !== cleaned){
+        empIDInput.value = cleaned;
+    }
+
+    checkRequirements();
+
+});
+
+// Block non-digit keys before they even appear (blocks letters, symbols, etc.)
+empIDInput.addEventListener("keydown", function(e){
+
+    const allowedKeys = [
+        "Backspace","Delete","Tab","Escape","Enter",
+        "ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"
+    ];
+
+    if(allowedKeys.includes(e.key)) return;
+
+    // Allow Ctrl/Cmd combos (copy, paste, select all, etc.)
+    if(e.ctrlKey || e.metaKey) return;
+
+    if(!/^[0-9]$/.test(e.key)){
+        e.preventDefault();
+    }
+
+});
+
+// Also sanitize pasted content (e.g. pasting "12a34" becomes "1234")
+empIDInput.addEventListener("paste", function(e){
+
+    e.preventDefault();
+
+    const pasted = (e.clipboardData || window.clipboardData).getData("text");
+    const cleaned = pasted.replace(/[^0-9]/g, "");
+
+    const start = empIDInput.selectionStart;
+    const end = empIDInput.selectionEnd;
+    const current = empIDInput.value;
+
+    empIDInput.value = current.slice(0, start) + cleaned + current.slice(end);
+
+    checkRequirements();
+
+});
 
 btn.onclick=function(){
 
-    const id=document.getElementById("empID").value.trim();
+    // Safety check in case something re-enabled the button unexpectedly
+    const id=empIDInput.value.trim();
 
-    if(id==""){
+    if(id===""){
         alert("Please enter Employee ID.");
+        return;
+    }
+
+    if(!photoCaptured){
+        alert("Please capture a photo before proceeding.");
         return;
     }
 
@@ -142,6 +233,12 @@ btn.onclick=function(){
             btn.innerHTML="◴ Clock Out";
 
             clockedIn=true;
+
+            // Require a fresh photo capture before clocking out
+            photoCaptured=false;
+            photo.classList.add("hidden");
+            captureBtn.innerHTML="[◉] Capture Photo";
+            checkRequirements();
 
         }
 
@@ -161,6 +258,11 @@ btn.onclick=function(){
 
             btn.classList.remove("bg-[#132B52]","hover:bg-[#0f2e59]");
             btn.classList.add("bg-[#6c757d]","cursor-not-allowed");
+
+            empIDInput.disabled = true;
+            captureBtn.classList.add("opacity-55","pointer-events-none");
+
+            requirementNote.innerHTML = "";
 
         }
 
@@ -220,6 +322,9 @@ captureBtn.addEventListener("click", async () => {
         captureBtn.innerHTML = "Retake Photo";
 
         cameraOpen = false;
+        photoCaptured = true;
+
+        checkRequirements();
 
     }
 
