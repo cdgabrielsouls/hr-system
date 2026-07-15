@@ -124,6 +124,7 @@
 @endif
 
        <form
+    id="onboarding-step1-form"
     action="{{ route('onboarding.storeStep1') }}"
     method="POST"
     enctype="multipart/form-data"
@@ -141,7 +142,7 @@
      <input
     type="text"
     name="first_name"
-        class="w-[220px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
+    class="name-field w-[220px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
       />
     </div>
   </div>
@@ -152,7 +153,7 @@
     <div class="relative">
       <input
         type="text" name="middle_name"
-        class="w-[220px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
+        class="name-field w-[220px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
       />
     </div>
   </div>
@@ -163,7 +164,7 @@
     <div class="relative">
       <input
         type="text" name="last_name"
-        class="w-[220px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
+        class="name-field w-[220px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
       />
     </div>
   </div>
@@ -172,10 +173,18 @@
   <div>
     <label class="block text-slate-300 text-xs mb-1">Suffix</label>
     <div class="relative">
-      <input
-        type="text"   name="suffix"
-        class="w-[118px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
-      />
+      <select
+        name="suffix"
+        class="w-[118px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 outline-none focus:ring-1 focus:ring-blue-500 appearance-none"
+      >
+        <option class="hidden"></option>
+        <option value="Jr.">Jr.</option>
+        <option value="Sr.">Sr.</option>
+        <option value="II">II</option>
+        <option value="III">III</option>
+        <option value="IV">IV</option>
+        <option value="V">V</option>
+      </select>
     </div>
   </div>
 
@@ -189,7 +198,8 @@
   <div>
     <label class="block text-slate-300 text-xs mb-1">Gender</label>
     <select  name="gender" class="w-[253px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 outline-none focus:ring-1 focus:ring-blue-500 appearance-none">
-      <option>Male</option>
+      <option class="hidden"></option>
+    <option>Male</option>
       <option>Female</option>
       <option>Prefer not to say</option>
     </select>
@@ -199,7 +209,7 @@
   <div>
     <label class="block text-slate-300 text-xs mb-1">Marital Status</label>
     <select  name="marital_status" class="w-[253px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 outline-none focus:ring-1 focus:ring-blue-500 appearance-none">
-      <option></option>
+      <option class="hidden"></option>
       <option>Single</option>
       <option>Married</option>
       <option>Widowed</option>
@@ -213,7 +223,7 @@
       <input
     type="text"
     name="nationality"
-        class="w-[253px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
+    class="name-field w-[253px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 pr-8 outline-none focus:ring-1 focus:ring-blue-500"
       />
     </div>
   </div>
@@ -226,7 +236,7 @@
             <label class="block text-slate-300 text-xs mb-1">Address</label>
             <div class="relative">
               <input type="text"  name="address" class="w-[825px] bg-[#0d1730] text-white text-sm rounded px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-blue-500" />
-              <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.44.263l-4 1.143a.5.5 0 01-.617-.618l1.143-4a1 1 0 01.263-.44l9.9-9.9a2 2 0 012.828 0zM15 4l1 1-9.5 9.5-1.5.429.429-1.5L15 4z"/></svg>
+           
             </div>
           </div>
 
@@ -235,15 +245,26 @@
             <div>
               <label class="block text-slate-300 text-xs mb-1">Email</label>
               <div class="relative">
-                <input type="email" name="email" class="w-[452px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-blue-500" />
-                <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.44.263l-4 1.143a.5.5 0 01-.617-.618l1.143-4a1 1 0 01.263-.44l9.9-9.9a2 2 0 012.828 0zM15 4l1 1-9.5 9.5-1.5.429.429-1.5L15 4z"/></svg>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    maxlength="254"
+                    class="w-[452px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-blue-500" />
+               
               </div>
             </div>
             <div>
               <label class="block text-slate-300 text-xs mb-1">Phone Number</label>
               <div class="relative">
-                <input type="tel"  name="phone" class="w-[253px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-blue-500" />
-                <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.44.263l-4 1.143a.5.5 0 01-.617-.618l1.143-4a1 1 0 01.263-.44l9.9-9.9a2 2 0 012.828 0zM15 4l1 1-9.5 9.5-1.5.429.429-1.5L15 4z"/></svg>
+                <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    inputmode="numeric"
+                    maxlength="11"
+                    class="w-[253px] h-[28px] bg-[#0d1730] text-white text-sm rounded px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-blue-500" />
+                
               </div>
             </div>
           </div>
@@ -301,12 +322,11 @@
 
 <input
     type="file"
-        id="profile_picture"
-        name="profile_picture"
-        accept="image/*"
-       enctype="multipart/form-data"
+    id="profile_picture"
+    name="profile_picture"
+    accept="image/*"
+    form="onboarding-step1-form"
     class="hidden"
-
     onchange="previewImage(event)">
       </div>
 
@@ -338,6 +358,144 @@ function previewImage(event) {
 
     reader.readAsDataURL(file);
 }
+
+/*
+  Prevent name-type fields (First Name, Middle Name, Last Name, Nationality)
+  from starting with a lowercase letter. Once there is already a character
+  in the field, lowercase letters are allowed as normal (e.g. "McDonald",
+  "dela Cruz" style middle characters still work).
+*/
+document.querySelectorAll('.name-field').forEach(function (input) {
+
+    input.addEventListener('keydown', function (e) {
+
+        // Only intercept plain single-letter keys (ignore Ctrl/Cmd combos, arrows, etc.)
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+        const isLowercaseLetter = /^[a-z]$/.test(e.key);
+
+        if (!isLowercaseLetter) return;
+
+        const atStart = input.selectionStart === 0 && input.selectionEnd === 0;
+        const fieldIsEmpty = input.value.length === 0;
+
+        // Block a lowercase letter only when it would become the very first character
+        if (atStart && fieldIsEmpty) {
+            e.preventDefault();
+        }
+
+    });
+
+    input.addEventListener('paste', function (e) {
+
+        const pasted = (e.clipboardData || window.clipboardData).getData('text');
+
+        if (pasted.length === 0) return;
+
+        const atStart = input.selectionStart === 0 && input.selectionEnd === 0;
+        const fieldIsEmpty = input.value.length === 0;
+
+        if (atStart && fieldIsEmpty && /^[a-z]/.test(pasted)) {
+            e.preventDefault();
+
+            // Auto-capitalize the first letter of the pasted text instead of rejecting it outright
+            const fixed = pasted.charAt(0).toUpperCase() + pasted.slice(1);
+            input.value = fixed;
+        }
+
+    });
+
+});
+
+/*
+  Phone Number field:
+  - digits only (no letters, symbols, spaces)
+  - hard cap of 11 digits (e.g. 09171234567)
+*/
+const phoneInput = document.getElementById('phone');
+
+phoneInput.addEventListener('keydown', function (e) {
+
+    const allowedKeys = [
+        "Backspace","Delete","Tab","Escape","Enter",
+        "ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"
+    ];
+
+    if (allowedKeys.includes(e.key)) return;
+
+    if (e.ctrlKey || e.metaKey) return;
+
+    const isDigit = /^[0-9]$/.test(e.key);
+
+    // Block non-digit keys entirely
+    if (!isDigit) {
+        e.preventDefault();
+        return;
+    }
+
+    // Block extra digits once 11 digits are already entered
+    // (unless there's a selection being replaced)
+    const hasSelection = phoneInput.selectionStart !== phoneInput.selectionEnd;
+
+    if (!hasSelection && phoneInput.value.length >= 11) {
+        e.preventDefault();
+    }
+
+});
+
+phoneInput.addEventListener('input', function () {
+
+    // Backup sanitizer: strip non-digits and enforce 11-digit cap
+    // (covers autofill, voice input, etc.)
+    let cleaned = phoneInput.value.replace(/[^0-9]/g, '');
+
+    if (cleaned.length > 11) {
+        cleaned = cleaned.slice(0, 11);
+    }
+
+    if (phoneInput.value !== cleaned) {
+        phoneInput.value = cleaned;
+    }
+
+});
+
+phoneInput.addEventListener('paste', function (e) {
+
+    e.preventDefault();
+
+    const pasted = (e.clipboardData || window.clipboardData).getData('text');
+    const digitsOnly = pasted.replace(/[^0-9]/g, '');
+
+    const start = phoneInput.selectionStart;
+    const end = phoneInput.selectionEnd;
+    const current = phoneInput.value;
+
+    let result = current.slice(0, start) + digitsOnly + current.slice(end);
+
+    if (result.length > 11) {
+        result = result.slice(0, 11);
+    }
+
+    phoneInput.value = result;
+
+});
+
+/*
+  Email field:
+  - standard max length of 254 characters (RFC 5321 practical limit),
+    enforced both via the maxlength attribute and here as a backup
+    in case maxlength is ever removed or bypassed.
+*/
+const emailInput = document.getElementById('email');
+const EMAIL_MAX_LENGTH = 254;
+
+emailInput.addEventListener('input', function () {
+
+    if (emailInput.value.length > EMAIL_MAX_LENGTH) {
+        emailInput.value = emailInput.value.slice(0, EMAIL_MAX_LENGTH);
+    }
+
+});
 </script>
 
 </body>

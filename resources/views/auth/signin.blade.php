@@ -214,6 +214,40 @@
             color: #0B1E3D;
         }
 
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 44px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            color: #0B1E3D;
+            opacity: 0.65;
+            transition: opacity .2s;
+            user-select: none;
+        }
+
+        .toggle-password:hover {
+            opacity: 1;
+        }
+
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
         button {
             width: 100%;
             height: 48px;
@@ -296,11 +330,24 @@
 
     <div class="input-group">
         <label>Password</label>
-        <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            required>
+        <div class="password-wrapper">
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter Password"
+                required>
+            <span class="toggle-password" id="togglePassword" role="button" aria-label="Show password" tabindex="0">
+                <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+            </span>
+        </div>
     </div>
 
     <button type="submit">Log In</button>
@@ -359,6 +406,32 @@
     if (signInBtn) signInBtn.addEventListener("click", (e) => smoothExit(e, "signIn.html"));
     if (contactBtn) contactBtn.addEventListener("click", (e) => smoothExit(e, "contactus.html"));
     if (headerLogoBtn) headerLogoBtn.addEventListener("click", (e) => smoothExit(e, "signIn.html"));
+
+    // 3. Show / hide password toggle
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+    const eyeOpen = document.getElementById("eyeOpen");
+    const eyeClosed = document.getElementById("eyeClosed");
+
+    function togglePasswordVisibility() {
+        const isHidden = passwordInput.type === "password";
+
+        passwordInput.type = isHidden ? "text" : "password";
+
+        eyeOpen.style.display = isHidden ? "none" : "block";
+        eyeClosed.style.display = isHidden ? "block" : "none";
+
+        togglePassword.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+    }
+
+    togglePassword.addEventListener("click", togglePasswordVisibility);
+
+    togglePassword.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            togglePasswordVisibility();
+        }
+    });
 </script>
 
 </body>

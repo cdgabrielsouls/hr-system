@@ -197,10 +197,7 @@
         <!-- WELCOME SECTION -->
         <div class="mt-2.5 mb-5 py-2.5 px-1">
             <h1 class="text-[22px] font-bold tracking-[2px] text-white mb-1.5">{{ strtoupper($departmentName) }}</h1>
-            <p class="text-[12.5px] text-[#C9DAF8] leading-relaxed max-w-[900px]">
-                The Business Management Department oversees daily operations, coordinates business activities,
-                and ensures resources and processes are managed efficiently to support the organization's goals.
-            </p>
+          
         </div>
 
         <!-- =========================

@@ -32,6 +32,9 @@ class DepartmentController extends Controller
             'it' => 'IT',
             'inventory' => 'Inventory Management',
             'ecommerce' => 'Electronic Commerce',
+             'order' => 'Order Management',
+           'procurement' => 'Procurement Management',
+               'production' => 'Production Management',
         ];
 
         $departmentName = $map[$slug] ?? null;

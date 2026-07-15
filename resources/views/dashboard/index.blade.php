@@ -1580,8 +1580,8 @@
        
 
         <div class="dropdown-menu">
-            <a href="#">Placeholder 1</a>
-            <a href="#">Placeholder 2</a>
+            <a href="/reports-analytics/attendance-overview">Attendance Record</a>
+            <a href="#">Leave Record</a>
            
         </div>
     </div>
@@ -1590,9 +1590,9 @@
         <a href="#">Leave Management</a>
 
         <div class="dropdown-menu">
-            <a href="#">Placeholder 1</a>
-            <a href="#">Placeholder 2</a>
-            <a href="#">Placeholder 3</a>
+            <a href="#">Leave Management</a>
+            <a href="#">Resignation</a>
+         
         </div>
     </div>
 
