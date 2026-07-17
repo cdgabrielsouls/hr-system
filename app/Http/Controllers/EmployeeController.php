@@ -7,45 +7,45 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-   public function index(Request $request)
-{
-    $employees = Employee::query();
+    public function index(Request $request)
+    {
+        $employees = Employee::query();
 
-    // Search
-    if ($request->filled('search')) {
-        $search = $request->search;
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
 
-        $employees->where(function ($query) use ($search) {
-            $query->whereRaw(
-                "CONCAT(first_name, ' ', last_name) LIKE ?",
-                ["%{$search}%"]
-            )
-            ->orWhere('first_name', 'like', "%{$search}%")
-            ->orWhere('last_name', 'like', "%{$search}%")
-            ->orWhere('department', 'like', "%{$search}%")
-            ->orWhere('position', 'like', "%{$search}%")
-            ->orWhere('employee_id', 'like', "%{$search}%");
-        });
+            $employees->where(function ($query) use ($search) {
+                $query->whereRaw(
+                    "CONCAT(first_name, ' ', last_name) LIKE ?",
+                    ["%{$search}%"]
+                )
+                ->orWhere('first_name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('department', 'like', "%{$search}%")
+                ->orWhere('position', 'like', "%{$search}%")
+                ->orWhere('employee_id', 'like', "%{$search}%");
+            });
+        }
+
+        switch (request('sort')) {
+            case 'name_asc':       $employees->orderBy('first_name', 'asc'); break;
+            case 'name_desc':      $employees->orderBy('first_name', 'desc'); break;
+            case 'id_asc':         $employees->orderBy('id', 'asc'); break;
+            case 'id_desc':        $employees->orderBy('id', 'desc'); break;
+            case 'department_asc': $employees->orderBy('department', 'asc'); break;
+            case 'department_desc':$employees->orderBy('department', 'desc'); break;
+            case 'position_asc':   $employees->orderBy('position', 'asc'); break;
+            case 'position_desc':  $employees->orderBy('position', 'desc'); break;
+            case 'newest':         $employees->orderBy('created_at', 'desc'); break;
+            case 'oldest':         $employees->orderBy('created_at', 'asc'); break;
+        }
+
+        $employees = $employees->paginate(13)->withQueryString();
+
+        return view('employees.index', compact('employees'));
     }
 
-    
-switch (request('sort')) {
-    case 'name_asc':       $employees->orderBy('first_name', 'asc'); break;
-    case 'name_desc':      $employees->orderBy('first_name', 'desc'); break;
-    case 'id_asc':         $employees->orderBy('id', 'asc'); break;
-    case 'id_desc':        $employees->orderBy('id', 'desc'); break;
-    case 'department_asc': $employees->orderBy('department', 'asc'); break;
-    case 'department_desc':$employees->orderBy('department', 'desc'); break;
-    case 'position_asc':   $employees->orderBy('position', 'asc'); break;
-    case 'position_desc':  $employees->orderBy('position', 'desc'); break;
-    case 'newest':          $employees->orderBy('created_at', 'desc'); break;
-    case 'oldest':          $employees->orderBy('created_at', 'asc'); break;
-}
-
-    $employees = $employees->paginate(13)->withQueryString();
-
-   return view('employees.index', compact('employees'));
-}
     public function create()
     {
         return view('employees.create');
@@ -53,11 +53,11 @@ switch (request('sort')) {
 
     public function store(Request $request)
     {
-     $request->validate([
-    'first_name'      => 'required',
-    'last_name'       => 'required',
-    'email'           => 'required|email|unique:employees,email',
-    'phone'           => 'nullable',
+        $request->validate([
+            'first_name'      => 'required',
+            'last_name'       => 'required',
+            'email'           => 'required|email|unique:employees,email',
+            'phone'           => 'nullable',
     'position'        => 'nullable',
     'department'      => 'required',
     'gender'          => 'nullable',
