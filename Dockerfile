@@ -1,6 +1,5 @@
 FROM php:8.4-cli
 
-
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -24,10 +23,17 @@ WORKDIR /app
 
 COPY . .
 
+RUN mkdir -p storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/cache/data \
+    storage/logs \
+    bootstrap/cache
+
 RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
 RUN npm install && npm run build
 
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["sh", "-c", "php artisan config:cache && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
