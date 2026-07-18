@@ -73,86 +73,16 @@
     <!-- =====================================================
             TOP NAVBAR
         ====================================================== -->
-    <header class="w-full h-[150px] bg-[#132B52] flex items-center justify-between pl-[1px] pr-[5px] border-b border-white/5 shadow-[0_1px_0_rgba(255,255,255,.03)_inset] sticky top-0 z-[1000]">
- 
-        <!-- Left -->
-        <div class="flex items-center gap-3">
-            <img src="{{ asset('images/logo.png') }}" class="h-[86px] w-auto object-contain block" alt="Header Logo">
-        </div>
- 
-        <div class="flex items-center gap-7">
-            <nav class="flex items-center gap-px">
- 
-                <div class="relative group">
-                    <a href="/dashboard" class="text-white no-underline text-xl py-2.5 px-[18px] flex items-center gap-2 rounded-full transition-all duration-250 hover:text-[#66A6FF] hover:bg-[#1B3A6B] hover:-translate-y-px hover:font-bold active:scale-[.97]">
-                        Dashboard
-                    </a>
-                </div>
- 
-                <div class="relative group">
-                    <a href="#" class="text-white no-underline text-xl py-2.5 px-[18px] flex items-center gap-2 rounded-full transition-all duration-250 hover:text-[#66A6FF] hover:bg-[#1B3A6B] hover:-translate-y-px hover:font-bold active:scale-[.97]">
-                        Workforce
-                        <svg class="w-3.5 h-3.5 opacity-80 transition-transform duration-300 origin-center group-hover:rotate-180 group-hover:opacity-100" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
- 
-                    <div class="absolute top-[120%] left-1/2 -translate-x-1/2 translate-y-2.5 w-[220px] bg-[#132B52] rounded-[18px] shadow-[0_20px_45px_rgba(0,0,0,.25),inset_0_1px_0_rgba(21,21,21,.7)] p-2.5 opacity-0 invisible transition-all duration-300 z-[999] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0">
-                        <a href="{{ route('employees.index') }}" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Employee List</a>
-                        <a href="{{ route('departments.index') }}" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Department List</a>
-                    </div>
-                </div>
- 
-                <div class="relative group">
-                    <a href="{{ route('onboarding.step1') }}" class="text-white no-underline text-xl py-2.5 px-[18px] flex items-center gap-2 rounded-full transition-all duration-250 hover:text-[#66A6FF] hover:bg-[#1B3A6B] hover:-translate-y-px hover:font-bold active:scale-[.97]">
-                        Employee Onboarding
-                        
-                    </a>
-                    
-                </div>
- 
-                <div class="relative group">
-                    <a href="#" class="text-white no-underline text-xl py-2.5 px-[18px] flex items-center gap-2 rounded-full transition-all duration-250 hover:text-[#66A6FF] hover:bg-[#1B3A6B] hover:-translate-y-px hover:font-bold active:scale-[.97]">
-                        Reports and Analytics
-                        <svg class="w-3.5 h-3.5 opacity-80 transition-transform duration-300 origin-center group-hover:rotate-180 group-hover:opacity-100" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <div class="absolute top-[120%] left-1/2 -translate-x-1/2 translate-y-2.5 w-[220px] bg-[#132B52] rounded-[18px] shadow-[0_20px_45px_rgba(0,0,0,.25),inset_0_1px_0_rgba(21,21,21,.7)] p-2.5 opacity-0 invisible transition-all duration-300 z-[999] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0">
-                        <a href="/reports-analytics/attendance-overview" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Attendance Record</a>
-                        <a href="{{ route('reports-analytics.leave') }}" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Leave Record</a>
-                       
-                    </div>
-                </div>
- 
-                <div class="relative group">
-                    <a href="#" class="text-white no-underline text-xl py-2.5 px-[18px] flex items-center gap-2 rounded-full transition-all duration-250 hover:text-[#66A6FF] hover:bg-[#1B3A6B] hover:-translate-y-px hover:font-bold active:scale-[.97]">
-                        Leave Management
-                    </a>
-                    <div class="absolute top-[120%] left-1/2 -translate-x-1/2 translate-y-2.5 w-[220px] bg-[#132B52] rounded-[18px] shadow-[0_20px_45px_rgba(0,0,0,.25),inset_0_1px_0_rgba(21,21,21,.7)] p-2.5 opacity-0 invisible transition-all duration-300 z-[999] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0">
-                        <a href="#" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Placeholder 1</a>
-                        <a href="#" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Placeholder 2</a>
-                        <a href="#" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Placeholder 3</a>
-                    </div>
-                </div>
- 
-            </nav>
- 
-            <div class="w-11 h-11 mr-[15px] rounded-full grid place-items-center bg-white/[.06] shadow-[inset_0_0_0_1px_rgba(255,255,255,.06)] " aria-label="Profile">
-                <svg class="w-10 h-10" viewBox="0 0 36 36" fill="none">
-                    <circle cx="18" cy="18" r="17" fill="white" opacity=".97"/>
-                    <circle cx="18" cy="13" r="5.2" fill="#223B63"/>
-                    <path d="M8.8 28.3C10.7 23.8 14.1 21.7 18 21.7C21.9 21.7 25.3 23.8 27.2 28.3" fill="#223B63"/>
-                </svg>
-            </div>
-        </div>
-    </header>
+    @include('partials.navbar')
 
-    <div class="w-[96.82%] max-w-[1859px] mx-auto">
+    <div class="w-[96.82%] max-w-[1859px] mx-auto" data-ajax-list>
         
-     <div class="w-full h-[60px] bg-[none] rounded-[14px]  px-0 py-5 mb-4 flex items-center justify-between gap-4 flex-wrap">
+     <div class="w-full min-h-[60px] bg-[none] rounded-[14px] px-0 py-5 mb-4 flex items-center justify-between gap-4 flex-wrap">
 
-    <form method="GET" action="{{ route('reports-analytics.attendance-overview') }}" class="flex items-center gap-3 flex-wrap" id="filterForm">
+    <form method="GET" action="{{ route('reports-analytics.leave') }}" class="flex items-center gap-3 flex-wrap" id="filterForm">
+        @if (request()->filled('per_page'))
+            <input type="hidden" name="per_page" value="{{ request('per_page') }}">
+        @endif
         <div class="search-box w-[487px] h-[45px] bg-[#0B1E3D] rounded-lg flex items-center px-3 opacity-70">
                 <i class="fa-solid fa-magnifying-glass text-[#9db5db] mr-2 text-[0.6875rem]"></i>
 
@@ -161,13 +91,13 @@
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Search employees by ID or name"
-                    class="w-full h-full bg-transparent border-none outline-none text-white text-[0.6875rem] placeholder:text-[#93abd3]">
+                    class="w-full h-full bg-transparent border-none outline-none text-white text-[0.6875rem] placeholder:text-[#93abd3]"
+                    autocomplete="off">
             </div>
 
             <div class="relative w-[220px] flex-none">
                 <select
                     name="department"
-                    onchange="this.form.submit()"
                     class="filter-select w-[220px] h-[45px] bg-[#0B1E3D] opacity-70 text-[#93abd3] border-none outline-none rounded-lg pl-3.5 pr-8 text-[0.6875rem] cursor-pointer">
 
                     <option value="">All Departments</option>
@@ -186,7 +116,7 @@
      
     </form>
 
-   
+        @include('partials.per-page-filter', ['perPage' => $employees->perPage()])
 </div>
 
 
@@ -278,128 +208,11 @@
 
 </div>
 
-        <!-- Data -->
-<div class="w-full max-w-[1859px] mx-auto bg-[#0B1E3D] rounded-[10px] overflow-x-hidden">
-
-    <table class="w-full table-fixed border-collapse">
-
-        <tbody>
-
-            @forelse($employees as $employee)
-
-            <tr class="border-t border-white/[0.18] transition-colors duration-[250ms] hover:bg-[#21457f]">
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[16%]">
-                    @php
-                        $genderClass = match(strtolower($employee->gender ?? '')) {
-                            'female' => 'text-[#ff8bd2]',
-                            'male' => 'text-[#6ea9ff]',
-                            default => 'text-white',
-                        };
-                    @endphp
-                    <i class="fa-solid fa-circle-user text-2xl {{ $genderClass }} mr-2"></i>
-                    {{ $employee->first_name }} {{ $employee->last_name }}
-                    <span class="block text-[0.65rem] text-[#93abd3] font-light mt-0.5">{{ '2026' . str_pad($employee->id, 4, '0', STR_PAD_LEFT) }}</span>
-                </td>
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[11%]">{{ $employee->department }}</td>
-
-                {{-- Placeholder columns: wire these up to real leave data once available --}}
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[11%] text-[#93abd3]">—</td>
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[10%] text-[#93abd3]">—</td>
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[14%] text-[#93abd3]">—</td>
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[10%] text-[#93abd3]">—</td>
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[11%] text-[#93abd3]">—</td>
-
-                <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight w-[9%]">
-                    <span class="status-badge">—</span>
-                </td>
-
-                <td class="p-4 text-[0.84375rem] text-center font-extralight w-[8%]">
-                    <a href="{{ route('reports-analytics.employee-attendance', $employee->id) }}" class="inline-block bg-[#132B52] text-white no-underline px-[21px] py-1.5 rounded-xl text-[0.6875rem] transition-all duration-[250ms] hover:bg-[#2e5ca3] hover:-translate-y-px">
-                        View
-                    </a>
-                </td>
-
-            </tr>
-
-            @empty
-
-            <tr>
-                <td colspan="9" class="p-[30px] text-center text-[#b9c8e8] text-sm">
-                    No employees found.
-                </td>
-            </tr>
-
-            @endforelse
-
-        </tbody>
-
-    </table>
+        <div data-ajax-list-results class="transition-opacity duration-200">
+            @include('reports-analytics.partials.leave-results')
+        </div>
 
 </div>
-
-        {{-- =========================
-             PAGINATION (5 per page)
-             $employees must come from a ->paginate(5) call in the controller.
-        ========================== --}}
-        @if ($employees instanceof \Illuminate\Contracts\Pagination\Paginator || $employees instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="pagination-wrap w-full flex items-center justify-between flex-wrap gap-3 mt-5 mb-8">
-
-            <div class="text-[11.5px] text-[#93abd3]">
-                @if ($employees->total() > 0)
-                    Showing {{ $employees->firstItem() }}–{{ $employees->lastItem() }} of {{ $employees->total() }} employees
-                @else
-                    No employees to show
-                @endif
-            </div>
-
-            <nav class="flex items-center gap-1.5">
-
-                @if ($employees->onFirstPage())
-                    <span class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-[#4c6291] cursor-not-allowed">
-                        <i class="fa-solid fa-chevron-left text-[11px]"></i>
-                    </span>
-                @else
-                    <a href="{{ $employees->appends(request()->query())->previousPageUrl() }}"
-                       class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-white transition-colors duration-200 hover:bg-[#2e5ca3]">
-                        <i class="fa-solid fa-chevron-left text-[11px]"></i>
-                    </a>
-                @endif
-
-                @foreach ($employees->appends(request()->query())->getUrlRange(1, $employees->lastPage()) as $page => $url)
-                    @if ($page == $employees->currentPage())
-                        <span class="w-9 h-9 grid place-items-center rounded-lg bg-[#2D7EFF] text-white text-[12px] font-semibold">
-                            {{ $page }}
-                        </span>
-                    @else
-                        <a href="{{ $url }}"
-                           class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-[#C9DAF8] text-[12px] transition-colors duration-200 hover:bg-[#2e5ca3] hover:text-white">
-                            {{ $page }}
-                        </a>
-                    @endif
-                @endforeach
-
-                @if ($employees->hasMorePages())
-                    <a href="{{ $employees->appends(request()->query())->nextPageUrl() }}"
-                       class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-white transition-colors duration-200 hover:bg-[#2e5ca3]">
-                        <i class="fa-solid fa-chevron-right text-[11px]"></i>
-                    </a>
-                @else
-                    <span class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-[#4c6291] cursor-not-allowed">
-                        <i class="fa-solid fa-chevron-right text-[11px]"></i>
-                    </span>
-                @endif
-
-            </nav>
-
-        </div>
-        @endif
-    </div>
 
     <script>
         const employeeCounters = document.querySelectorAll('.employee-counter');
@@ -422,6 +235,8 @@
 
         employeeCounters.forEach((counter) => animateEmployeeCounter(counter));
     </script>
+
+    <script src="{{ asset('js/ajax-list.js') }}" defer></script>
 
 </body>
 

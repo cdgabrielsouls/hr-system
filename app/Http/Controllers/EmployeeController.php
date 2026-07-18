@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\ResolvesPerPage;
+use App\Http\Controllers\Concerns\RespondsWithAjaxList;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+    use ResolvesPerPage;
+    use RespondsWithAjaxList;
+
     public function index(Request $request)
     {
         $employees = Employee::query();
@@ -41,7 +46,11 @@ class EmployeeController extends Controller
             case 'oldest':         $employees->orderBy('created_at', 'asc'); break;
         }
 
-        $employees = $employees->paginate(13)->withQueryString();
+        $employees = $employees->paginate($this->perPage($request))->withQueryString();
+
+        if ($this->wantsAjaxList($request)) {
+            return $this->ajaxListResponse('employees.partials.list-results', compact('employees'));
+        }
 
         return view('employees.index', compact('employees'));
     }

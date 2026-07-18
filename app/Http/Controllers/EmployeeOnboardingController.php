@@ -54,7 +54,28 @@ class EmployeeOnboardingController extends Controller
                 ->with('error', 'Please complete step 1 first.');
         }
 
-        session(['step2' => $request->all()]);
+        $validated = $request->validate([
+            'department' => 'required|string',
+            'position' => 'required|string',
+            'hire_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ]);
+
+        $start = \Carbon\Carbon::parse($validated['start_time']);
+        $end = \Carbon\Carbon::parse($validated['end_time']);
+
+        if ($end->lte($start)) {
+            return back()
+                ->withErrors(['end_time' => 'End Time must be after Start Time.'])
+                ->withInput();
+        }
+
+        $validated['start_time'] = $start->format('H:i');
+        $validated['end_time'] = $end->format('H:i');
+        $validated['work_schedule'] = $validated['start_time'].'-'.$validated['end_time'];
+
+        session(['step2' => $validated]);
 
         return redirect()->route('onboarding.step3');
     }

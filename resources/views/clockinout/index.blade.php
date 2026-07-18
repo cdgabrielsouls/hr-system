@@ -89,6 +89,7 @@
                 <form method="POST" action="{{ route('clockinout.index') }}" id="attendanceForm">
                     @csrf
                     <input type="hidden" name="action" id="attendanceAction" value="clock_in">
+                    <input type="hidden" name="photo" id="photoData" value="">
 
                     <div class="w-full h-[60px] sm:h-[75px] bg-[#132B52] rounded-[10px] flex items-center px-4 sm:px-7 mb-5 sm:mb-6">
                         <span class="text-white text-base sm:text-[22px] font-medium mr-3 sm:mr-5 whitespace-nowrap">Employee ID:</span>
@@ -112,7 +113,7 @@
 
                 <canvas id="canvas" class="hidden"></canvas>
 
-                <img id="photo" class="hidden w-full rounded-[10px] mt-5 mx-auto" alt="Captured attendance photo">
+                <img id="photo" class="hidden w-full max-w-[320px] rounded-[10px] mt-5 mx-auto object-cover" alt="Captured attendance photo">
 
                 <button id="attendanceBtn" type="button" disabled
                     class="w-full h-[80px] sm:h-[114px] border-none rounded-[7.9px] bg-[#132B52] text-white text-xl sm:text-[28.6px] font-normal cursor-pointer transition-colors duration-[250ms] mb-2 flex justify-center items-center hover:bg-[#0f2e59] disabled:hover:bg-[#132B52]">
@@ -173,6 +174,7 @@ const requirementNote=document.getElementById("requirementNote");
 function checkRequirements(){
 
     const idFilled = empIDInput.value.trim() !== "";
+    const actionLabel = clockedIn ? "Clock Out" : "Clock In";
 
     if(idFilled && photoCaptured){
         btn.disabled = false;
@@ -181,11 +183,11 @@ function checkRequirements(){
         btn.disabled = true;
 
         if(!idFilled && !photoCaptured){
-            requirementNote.innerHTML = "Enter your Employee ID and capture a photo to enable Clock In.";
+            requirementNote.innerHTML = `Enter your Employee ID and capture a photo to enable ${actionLabel}.`;
         }else if(!idFilled){
-            requirementNote.innerHTML = "Enter your Employee ID to enable Clock In.";
+            requirementNote.innerHTML = `Enter your Employee ID to enable ${actionLabel}.`;
         }else{
-            requirementNote.innerHTML = "Capture a photo to enable Clock In.";
+            requirementNote.innerHTML = `Capture a photo to enable ${actionLabel}.`;
         }
     }
 
@@ -241,41 +243,11 @@ empIDInput.addEventListener("paste", function(e){
 
 });
 
-btn.onclick=function(){
-
-    // Safety check in case something re-enabled the button unexpectedly
-    const id=empIDInput.value.trim();
-
-    if(id===""){
-        alert("Please enter Employee ID.");
-        return;
-    }
-
-    if(!photoCaptured){
-        alert("Please capture a photo before proceeding.");
-        return;
-    }
-
-    const now=new Date().toLocaleTimeString();
-
-    if (! clockedIn) {
-        if (confirm("Clock in now?")) {
-            document.getElementById('attendanceAction').value = 'clock_in';
-            attendanceForm.submit();
-        }
-    } else {
-        if (confirm("Clock out now?")) {
-            document.getElementById('attendanceAction').value = 'clock_out';
-            attendanceForm.submit();
-        }
-    }
-
-}
-
 const captureBtn = document.getElementById("captureBtn");
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const photo = document.getElementById("photo");
+const photoData = document.getElementById("photoData");
 
 const serverClockIn = @json(session('clock_in'));
 const serverClockOut = @json(session('clock_out'));
@@ -284,6 +256,24 @@ const serverClockedOut = @json(session('clocked_out', false));
 
 let stream = null;
 let cameraOpen = false;
+
+function compressCapture(videoEl) {
+    const maxEdge = 480;
+    const srcW = videoEl.videoWidth || 640;
+    const srcH = videoEl.videoHeight || 480;
+    const scale = Math.min(1, maxEdge / Math.max(srcW, srcH));
+    const dstW = Math.max(1, Math.round(srcW * scale));
+    const dstH = Math.max(1, Math.round(srcH * scale));
+
+    canvas.width = dstW;
+    canvas.height = dstH;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(videoEl, 0, 0, dstW, dstH);
+
+    // JPEG ~0.55 keeps the upload small while remaining clear enough for attendance.
+    return canvas.toDataURL("image/jpeg", 0.55);
+}
 
 if (serverClockIn) {
     document.getElementById("clockIn").textContent = serverClockIn;
@@ -303,6 +293,7 @@ if (serverClockedOut) {
     captureBtn.classList.add("opacity-55","pointer-events-none");
 } else if (clockedIn) {
     btn.innerHTML = "◴ Clock Out";
+    requirementNote.innerHTML = "Capture a photo to enable Clock Out.";
 }
 
 captureBtn.addEventListener("click", async () => {
@@ -312,11 +303,12 @@ captureBtn.addEventListener("click", async () => {
         try{
 
             stream = await navigator.mediaDevices.getUserMedia({
-                video:true
+                video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }
             });
 
             video.srcObject = stream;
             video.classList.remove("hidden");
+            photo.classList.add("hidden");
 
             captureBtn.innerHTML = "Take Photo";
 
@@ -330,17 +322,11 @@ captureBtn.addEventListener("click", async () => {
 
     }else{
 
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        ctx.drawImage(video,0,0);
-
-        const image = canvas.toDataURL("image/png");
+        const image = compressCapture(video);
 
         photo.src = image;
         photo.classList.remove("hidden");
+        photoData.value = image;
 
         video.classList.add("hidden");
 
@@ -357,6 +343,33 @@ captureBtn.addEventListener("click", async () => {
 
 });
 
+btn.onclick=function(){
+
+    const id=empIDInput.value.trim();
+
+    if(id===""){
+        alert("Please enter Employee ID.");
+        return;
+    }
+
+    if(!photoCaptured || !photoData.value){
+        alert("Please capture a photo before proceeding.");
+        return;
+    }
+
+    if (! clockedIn) {
+        if (confirm("Clock in now?")) {
+            document.getElementById('attendanceAction').value = 'clock_in';
+            attendanceForm.submit();
+        }
+    } else {
+        if (confirm("Clock out now?")) {
+            document.getElementById('attendanceAction').value = 'clock_out';
+            attendanceForm.submit();
+        }
+    }
+
+}
 </script>
 
 </body>

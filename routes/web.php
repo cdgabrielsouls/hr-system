@@ -59,10 +59,6 @@ Route::middleware('employee.auth')->group(function () {
         Route::get('/success', [EmployeeOnboardingController::class, 'success'])->name('success');
     });
 
-    Route::get('/reports-analytics/employee-attendance', function () {
-        return view('reports-analytics.employee-attendance');
-    })->name('reports-analytics.employee-attendance');
-
     Route::get('/reports-analytics/attendance-overview', [ReportsAnalyticsController::class, 'index'])
         ->name('reports-analytics.attendance-overview');
 

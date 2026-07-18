@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\ResolvesPerPage;
+use App\Http\Controllers\Concerns\RespondsWithAjaxList;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\Department;
 
 class DepartmentController extends Controller
 {
+    use ResolvesPerPage;
+    use RespondsWithAjaxList;
+
     public function index(Request $request)
     {
         $query = Department::query();
@@ -17,7 +22,7 @@ class DepartmentController extends Controller
                   ->orWhere('department_code', 'like', '%' . $request->search . '%');
         }
 
-        $departments = $query->get();
+        $departments = $query->orderBy('department_name')->get();
 
         return view('departments.index', compact('departments'));
     }
@@ -86,7 +91,16 @@ class DepartmentController extends Controller
                 break;
         }
 
-        $departments = $query->get();
+        $departments = $query
+            ->paginate($this->perPage($request))
+            ->withQueryString();
+
+        if ($this->wantsAjaxList($request)) {
+            return $this->ajaxListResponse(
+                'departments.partials.show-results',
+                compact('departments')
+            );
+        }
 
         return view('departments.show', compact(
             'departments',
