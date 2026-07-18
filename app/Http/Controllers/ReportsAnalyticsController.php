@@ -33,4 +33,21 @@ class ReportsAnalyticsController extends Controller
 
         return view('reports-analytics.employee-attendance', compact('employee'));
     }
+
+    public function leave(Request $request)
+    {
+        $employees = Employee::when($request->search, function ($query, $search) {
+                $query->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('id', $search);
+            })
+            ->when($request->department, function ($query, $department) {
+                $query->where('department', $department);
+            })
+            ->orderBy('id')
+            ->paginate(5)
+            ->withQueryString();
+
+        return view('reports-analytics.leave', compact('employees'));
+    }
 }

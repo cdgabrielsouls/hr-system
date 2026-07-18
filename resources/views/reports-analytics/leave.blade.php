@@ -60,6 +60,11 @@
             background: rgba(255,255,255,.06);
             color: #93abd3;
         }
+
+        /* Pagination links rendered by Laravel's paginator (Tailwind view) */
+        .pagination-wrap nav > div:first-child {
+            display: none;
+        }
     </style>
 </head>
 
@@ -115,7 +120,7 @@
                     </a>
                     <div class="absolute top-[120%] left-1/2 -translate-x-1/2 translate-y-2.5 w-[220px] bg-[#132B52] rounded-[18px] shadow-[0_20px_45px_rgba(0,0,0,.25),inset_0_1px_0_rgba(21,21,21,.7)] p-2.5 opacity-0 invisible transition-all duration-300 z-[999] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0">
                         <a href="/reports-analytics/attendance-overview" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Attendance Record</a>
-                        <a href="#" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Leave Record</a>
+                        <a href="{{ route('reports-analytics.leave') }}" class="block no-underline text-[#C9DAF8] py-[11px] px-3.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:bg-[#f3f6fb] hover:text-[#2D7EFF]">Leave Record</a>
                        
                     </div>
                 </div>
@@ -144,105 +149,107 @@
     </header>
 
     <div class="w-[96.82%] max-w-[1859px] mx-auto">
+        
+     <div class="w-full h-[60px] bg-[none] rounded-[14px]  px-0 py-5 mb-4 flex items-center justify-between gap-4 flex-wrap">
+
+    <form method="GET" action="{{ route('reports-analytics.attendance-overview') }}" class="flex items-center gap-3 flex-wrap" id="filterForm">
+        <div class="search-box w-[487px] h-[45px] bg-[#0B1E3D] rounded-lg flex items-center px-3 opacity-70">
+                <i class="fa-solid fa-magnifying-glass text-[#9db5db] mr-2 text-[0.6875rem]"></i>
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Search employees by ID or name"
+                    class="w-full h-full bg-transparent border-none outline-none text-white text-[0.6875rem] placeholder:text-[#93abd3]">
+            </div>
+
+            <div class="relative w-[220px] flex-none">
+                <select
+                    name="department"
+                    onchange="this.form.submit()"
+                    class="filter-select w-[220px] h-[45px] bg-[#0B1E3D] opacity-70 text-[#93abd3] border-none outline-none rounded-lg pl-3.5 pr-8 text-[0.6875rem] cursor-pointer">
+
+                    <option value="">All Departments</option>
+                    <option value="Business Intelligence" {{ request('department') == 'Business Intelligence' ? 'selected' : '' }}>Business Intelligence</option>
+                    <option value="E-commerce" {{ request('department') == 'E-commerce' ? 'selected' : '' }}>E-commerce</option>
+                    <option value="Finance" {{ request('department') == 'Finance' ? 'selected' : '' }}>Finance</option>
+                    <option value="Human Resources" {{ request('department') == 'Human Resources' ? 'selected' : '' }}>Human Resources</option>
+                    <option value="IT Service Management" {{ request('department') == 'IT Service Management' ? 'selected' : '' }}>IT Service Management</option>
+                    <option value="Inventory Management" {{ request('department') == 'Inventory Management' ? 'selected' : '' }}>Inventory Management</option>
+                    <option value="Order Management" {{ request('department') == 'Order Management' ? 'selected' : '' }}>Order Management</option>
+                    <option value="Procurement Management" {{ request('department') == 'Procurement Management' ? 'selected' : '' }}>Procurement Management</option>
+                    <option value="Production Management" {{ request('department') == 'Production Management' ? 'selected' : '' }}>Production Management</option>
+                </select>
+            </div>
+
+     
+    </form>
+
+   
+</div>
 
 
-    <p class="text-[24px] text-[#FFFFFF] fw-500 mt-1 leading-relaxed max-w-[900px]">
-               Attendance Overview
-            </p>
+        <!-- Leave stats -->
+         <div class="grid grid-cols-4 gap-4 mt-4 mb-4">
 
-        <!-- Total Employees stat -->
-         <div class="grid grid-cols-5 gap-4 mt-4 mb-4">
-        <div class="mt-4 mb-1 w-[353px] h-[134px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
+        <div class="mt-4 mb-1 w-[432px] h-[142px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
             <div class="w-[39px] h-[39px] rounded-xl bg-white/[.05] flex items-center justify-center flex-none">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                    <circle cx="9" cy="10" r="3" stroke="#DCEBFF" stroke-width="1.8"/>
-                    <circle cx="16.3" cy="11.2" r="2.4" stroke="#DCEBFF" stroke-width="1.8"/>
-                    <path d="M4.8 18.4C6 15.8 7.9 14.7 10.1 14.7C12.3 14.7 14.1 15.8 15.3 18.4" stroke="#DCEBFF" stroke-width="1.8" stroke-linecap="round"/>
-                    <path d="M15.4 18.2C16 16.8 17.2 16.1 18.4 16.1C19.5 16.1 20.4 16.5 21 17.4" stroke="#DCEBFF" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M9 12L11 14L15 10" stroke="#DCEBFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 4H14L18 8V19C18 20.1046 17.1046 21 16 21H7C5.89543 21 5 20.1046 5 19V6C5 4.89543 5.89543 4 7 4Z" stroke="#DCEBFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
             <div>
-                <div class="text-[11.9px] text-[#E7F0FF]">Total Employees</div>
-                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
+                <div class="text-[11.9px] text-[#E7F0FF]">Total Reviewed</div>
+                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $totalReviewed ?? 0 }}">0</div>
             </div>
         </div>
 
-        <div class="mt-4 mb-1 w-[353px] h-[134px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
+        <div class="mt-4 mb-1 w-[432px] h-[142px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
             <div class="w-[39px] h-[39px] rounded-xl bg-green-500/20 flex items-center justify-center flex-none">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8">
                     <circle cx="12" cy="12" r="9" stroke="#16A34A" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 5.5V12H18" stroke="#16A34A" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 12.5L10.5 15L16 9" stroke="#16A34A" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
             <div>
-                <div class="text-[11.9px] text-[#E7F0FF]">Present Days</div>
-                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
+                <div class="text-[11.9px] text-[#E7F0FF]">Approved</div>
+                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $approvedCount ?? 0 }}">0</div>
             </div>
         </div>
 
-        <div class="mt-4 mb-1 w-[353px] h-[134px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
-            <div class="w-[39px] h-[39px] rounded-xl bg-[#D97706]/20 flex items-center justify-center flex-none">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.8">
-                    <circle cx="12" cy="12" r="9" stroke="#D97706" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 5.5V12H18" stroke="#D97706" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div>
-                <div class="text-[11.9px] text-[#E7F0FF]">Late</div>
-                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
-            </div>
-        </div>
-
-        <div class="mt-4 mb-1 w-[353px] h-[134px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
+        <div class="mt-4 mb-1 w-[432px] h-[142px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
             <div class="w-[39px] h-[39px] rounded-xl bg-[#DC2626]/20 flex items-center justify-center flex-none">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.8">
                     <circle cx="12" cy="12" r="9" stroke="#DC2626" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 5.5V12H18" stroke="#DC2626" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 9.5L14.5 14.5M14.5 9.5L9.5 14.5" stroke="#DC2626" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
             <div>
-                <div class="text-[11.9px] text-[#E7F0FF]">Absent</div>
-                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
+                <div class="text-[11.9px] text-[#E7F0FF]">Rejected</div>
+                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $rejectedCount ?? 0 }}">0</div>
             </div>
         </div>
 
-        <div class="mt-4 mb-1 w-[353px] h-[134px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
-    <div class="w-[39px] h-[39px] rounded-xl bg-[#0EA5E9]/20 flex items-center justify-center flex-none">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-            <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#0EA5E9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </div>
-    <div>
-        <div class="text-[11.9px] text-[#E7F0FF]">On Leave</div>
-        <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
-    </div>
-</div>
+        <div class="mt-4 mb-1 w-[432px] h-[142px] bg-[#0B1E3D] rounded-[20px] border border-white/[0.05] px-4 flex items-center gap-3">
+            <div class="w-[39px] h-[39px] rounded-xl bg-[#0EA5E9]/20 flex items-center justify-center flex-none">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#0EA5E9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div>
+                <div class="text-[11.9px] text-[#E7F0FF]">Total Reports this Month</div>
+                <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $reportsThisMonth ?? 0 }}">0</div>
+            </div>
+        </div>
+
         </div>
 
         
         
 
-        <div class="w-full bg-[#0B1E3D] rounded-[14px] border border-white/[0.05] px-5 py-4 mb-4 flex items-center justify-between gap-4 flex-wrap">
-
-    <form method="GET" action="{{ route('employees.index') }}" class="flex items-center gap-3 flex-wrap" id="filterForm">
-        <div class="relative w-[220px]">
-            <select name="department" class="filter-select w-full h-[45px] bg-[#132B52] text-[#C9DAF8] border-none outline-none rounded-lg pl-3.5 pr-8 text-[0.6875rem] cursor-pointer">
-                <option value="">All Departments</option>
-                @foreach(($departments ?? collect($employees)->pluck('department')->unique()->filter()->values()) as $dept)
-                    <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>{{ $dept }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <button type="submit" class="toolbar-btn bg-[#132B52] text-[#C9DAF8] hover:bg-[#1B3A6B] hover:text-white">
-            <i class="fa-solid fa-filter text-[0.65rem]"></i> Filter
-        </button>
-    </form>
-
-    <button type="button" id="exportBtn" class="toolbar-btn bg-[#0EA5E9] text-white hover:bg-[#0284c7] hover:-translate-y-px">
-        <i class="fa-solid fa-file-export text-[0.65rem]"></i> Export
-    </button>
-</div>
+        
 
         <!-- =========================
             TABLE
@@ -335,6 +342,63 @@
     </table>
 
 </div>
+
+        {{-- =========================
+             PAGINATION (5 per page)
+             $employees must come from a ->paginate(5) call in the controller.
+        ========================== --}}
+        @if ($employees instanceof \Illuminate\Contracts\Pagination\Paginator || $employees instanceof \Illuminate\Pagination\LengthAwarePaginator)
+        <div class="pagination-wrap w-full flex items-center justify-between flex-wrap gap-3 mt-5 mb-8">
+
+            <div class="text-[11.5px] text-[#93abd3]">
+                @if ($employees->total() > 0)
+                    Showing {{ $employees->firstItem() }}–{{ $employees->lastItem() }} of {{ $employees->total() }} employees
+                @else
+                    No employees to show
+                @endif
+            </div>
+
+            <nav class="flex items-center gap-1.5">
+
+                @if ($employees->onFirstPage())
+                    <span class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-[#4c6291] cursor-not-allowed">
+                        <i class="fa-solid fa-chevron-left text-[11px]"></i>
+                    </span>
+                @else
+                    <a href="{{ $employees->appends(request()->query())->previousPageUrl() }}"
+                       class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-white transition-colors duration-200 hover:bg-[#2e5ca3]">
+                        <i class="fa-solid fa-chevron-left text-[11px]"></i>
+                    </a>
+                @endif
+
+                @foreach ($employees->appends(request()->query())->getUrlRange(1, $employees->lastPage()) as $page => $url)
+                    @if ($page == $employees->currentPage())
+                        <span class="w-9 h-9 grid place-items-center rounded-lg bg-[#2D7EFF] text-white text-[12px] font-semibold">
+                            {{ $page }}
+                        </span>
+                    @else
+                        <a href="{{ $url }}"
+                           class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-[#C9DAF8] text-[12px] transition-colors duration-200 hover:bg-[#2e5ca3] hover:text-white">
+                            {{ $page }}
+                        </a>
+                    @endif
+                @endforeach
+
+                @if ($employees->hasMorePages())
+                    <a href="{{ $employees->appends(request()->query())->nextPageUrl() }}"
+                       class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-white transition-colors duration-200 hover:bg-[#2e5ca3]">
+                        <i class="fa-solid fa-chevron-right text-[11px]"></i>
+                    </a>
+                @else
+                    <span class="w-9 h-9 grid place-items-center rounded-lg bg-[#0B1E3D] text-[#4c6291] cursor-not-allowed">
+                        <i class="fa-solid fa-chevron-right text-[11px]"></i>
+                    </span>
+                @endif
+
+            </nav>
+
+        </div>
+        @endif
     </div>
 
     <script>

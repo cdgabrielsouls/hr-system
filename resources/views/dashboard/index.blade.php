@@ -136,7 +136,7 @@
                       shadow-[0_20px_45px_rgba(0,0,0,.25)] opacity-0 invisible transition-all duration-300 z-50
                       group-hover:opacity-100 group-hover:visible group-hover:translate-y-0">
             <a href="reports-analytics/attendance-overview" class="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#C9DAF8] transition hover:bg-slate-50 hover:text-accent">Attendance Record</a>
-            <a href="#" class="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#C9DAF8] transition hover:bg-slate-50 hover:text-accent">Leave Record</a>
+            <a href="{{ route('reports-analytics.leave') }}" class="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#C9DAF8] transition hover:bg-slate-50 hover:text-accent">Leave Record</a>
           </div>
         </div>
 

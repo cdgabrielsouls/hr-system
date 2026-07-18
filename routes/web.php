@@ -69,11 +69,8 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/reports-analytics/employee-attendance/{employee}', [ReportsAnalyticsController::class, 'employeeAttendance'])
         ->name('reports-analytics.employee-attendance');
 
-    Route::get('/reports-analytics/leave', function () {
-        $employees = Employee::all();
-        $employeeCount = $employees->count();
-        return view('reports-analytics.leave', compact('employees', 'employeeCount'));
-    })->name('reports-analytics.leave');
+    Route::get('/reports-analytics/leave', [ReportsAnalyticsController::class, 'leave'])
+        ->name('reports-analytics.leave');
 
     Route::get('/attendance/today-count', function () {
         return response()->json([
