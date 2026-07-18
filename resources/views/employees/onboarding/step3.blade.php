@@ -158,19 +158,6 @@
         </div>
     </div>
 
-    <!-- Medical Certificate -->
-    <div>
-        <label class="block text-slate-300 text-xs mb-1">
-            Medical Certificate
-        </label>
-
-        <div class="relative">
-           <input type="file" name="medical_certificate"
-                class="w-[1335px] h-[45px] bg-[#0D1730] text-white text-sm rounded px-3 outline-none cursor-pointer"
-            />
-        </div>
-    </div>
-
     <!-- Navigation Buttons -->
     <!-- Back Button -->
     <a href="{{ route('onboarding.step2') }}"
