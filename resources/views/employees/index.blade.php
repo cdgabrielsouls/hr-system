@@ -25,6 +25,50 @@
                 },
             },
         };
+
+        /* COUNTER ANIMATION */
+    document.querySelectorAll('.counter').forEach((counter, index) => {
+      setTimeout(() => animateCounter(counter), 320 + index * 110);
+    });
+    function animateCounter(el){
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 1450;
+      const start = performance.now();
+      function update(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased).toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    /* SUBTLE CARD TILT */
+    document.querySelectorAll('.tilt').forEach(card => {
+      let raf = null;
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const rotateY = (px - 0.5) * 4.6;
+        const rotateX = (0.5 - py) * 4.2;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        if (raf) cancelAnimationFrame(raf);
+        card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+      });
+    });
+
+    window.addEventListener('load', () => {
+  const loader = document.getElementById('page-loader');
+  setTimeout(() => {
+    loader.classList.add('hide');
+  }, 400); // small delay so it doesn't flash too fast
+});
     </script>
 
     <!-- The handful of things Tailwind utilities genuinely can't express
@@ -50,8 +94,43 @@
             background-position: right 14px center;
             background-size: 14px;
         }
+
+        .loader {
+  --color-1: #2D7EFF;
+  --size: 1px;
+  width: calc(48 * var(--size));
+  height: calc(48 * var(--size));
+  border-radius: 50%;
+  display: inline-block;
+  border-top: calc(3 * var(--size)) solid var(--color-1);
+  border-right: calc(3 * var(--size)) solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #132C5B;
+  transition: opacity .4s ease, visibility .4s ease;
+}
+#page-loader.hide {
+  opacity: 0;
+  visibility: hidden;
+}
     </style>
 </head>
+
+<div id="page-loader">
+  <span class="loader"></span>
+</div>
 
 <body class="font-sans bg-[#18386d] text-white m-0 p-0">
 
