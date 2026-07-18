@@ -118,6 +118,16 @@ action="{{ route('onboarding.storeStep4') }}"
 method="POST"
 > @csrf
 
+    @if ($errors->any())
+        <div class="bg-red-500/20 border border-red-500 text-red-100 rounded p-4 mb-6">
+            <ul class="list-disc list-inside text-sm space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
 <div class="w-[1335px] bg-[#0D1730] rounded-xl p-8 space-y-8">
 
     <!-- Policy 1 -->
@@ -136,8 +146,9 @@ method="POST"
         <label class="flex items-start gap-3 text-slate-300 text-sm cursor-pointer">
            <input 
     type="checkbox" 
-   
-
+    name="policy_1"
+    value="1"
+    required
     class="mt-1 w-4 h-4"
 >
             <span>
@@ -158,8 +169,9 @@ method="POST"
         <label class="flex items-start gap-3 text-slate-300 text-sm cursor-pointer">
             <input 
     type="checkbox" 
- 
-
+    name="policy_2"
+    value="1"
+    required
     class="mt-1 w-4 h-4"
 >
             <span>
@@ -181,8 +193,9 @@ method="POST"
         <label class="flex items-start gap-3 text-slate-300 text-sm cursor-pointer">
             <input 
     type="checkbox" 
-  
-
+    name="policy_3"
+    value="1"
+    required
     class="mt-1 w-4 h-4"
 >
             <span>
@@ -202,7 +215,9 @@ method="POST"
         <label class="flex items-start gap-3 text-slate-300 text-sm cursor-pointer">
             <input 
     type="checkbox" 
- 
+    name="policy_4"
+    value="1"
+    required
         class="mt-1 w-4 h-4"
 >
             <span>
@@ -222,8 +237,9 @@ method="POST"
         <label class="flex items-start gap-3 text-slate-300 text-sm cursor-pointer">
             <input 
     type="checkbox" 
-   
-
+    name="policy_5"
+    value="1"
+    required
     class="mt-1 w-4 h-4"
 >
             <span>
@@ -246,7 +262,9 @@ method="POST"
         <label class="flex items-start gap-3 text-slate-300 text-sm cursor-pointer">
             <input 
     type="checkbox" 
-   
+    name="policy_6"
+    value="1"
+    required
  class="mt-1 w-4 h-4"
 >
             <span>

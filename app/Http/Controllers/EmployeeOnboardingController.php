@@ -134,21 +134,30 @@ class EmployeeOnboardingController extends Controller
     }
 
     public function storeStep4(Request $request)
-{
-    $step1 = session('step1');
-    $step2 = session('step2');
-    $step3 = session('step3');
+    {
+        $step1 = session('step1');
+        $step2 = session('step2');
+        $step3 = session('step3');
 
-    if (! $step1 || ! $step2 || ! $step3) {
-        return redirect()->route('onboarding.step1')
-            ->with('error', 'Your onboarding session expired. Please start again.');
-    }
+        if (! $step1 || ! $step2 || ! $step3) {
+            return redirect()->route('onboarding.step1')
+                ->with('error', 'Your onboarding session expired. Please start again.');
+        }
 
-    $firstName = preg_replace('/\s+/', '', $step1['first_name']);
-    $lastName = preg_replace('/\s+/', '', $step1['last_name']);
+        $request->validate([
+            'policy_1' => 'accepted',
+            'policy_2' => 'accepted',
+            'policy_3' => 'accepted',
+            'policy_4' => 'accepted',
+            'policy_5' => 'accepted',
+            'policy_6' => 'accepted',
+        ]);
 
-    $companyEmail = strtolower($firstName . $lastName . '@nexora.com');
-    $password = 'NEX-' . Str::upper(Str::random(6));
+        $firstName = preg_replace('/\s+/', '', $step1['first_name']);
+        $lastName = preg_replace('/\s+/', '', $step1['last_name']);
+
+        $companyEmail = strtolower($firstName . $lastName . '@nexora.com');
+        $password = 'NEX-' . Str::upper(Str::random(6));
 
     $employee = Employee::create([
         'first_name' => $step1['first_name'],
