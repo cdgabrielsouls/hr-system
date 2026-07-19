@@ -44,6 +44,7 @@ class EmployeeController extends Controller
             case 'position_desc':  $employees->orderBy('position', 'desc'); break;
             case 'newest':         $employees->orderBy('created_at', 'desc'); break;
             case 'oldest':         $employees->orderBy('created_at', 'asc'); break;
+            default:               $employees->orderBy('id', 'asc'); break;
         }
 
         $employees = $employees->paginate($this->perPage($request))->withQueryString();

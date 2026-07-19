@@ -26,12 +26,22 @@
                         <span class="block text-[0.65rem] text-[#93abd3] font-light mt-0.5">{{ '2026' . str_pad($employee->id, 4, '0', STR_PAD_LEFT) }}</span>
                     </td>
                     <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight">{{ $employee->department }}</td>
-                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight text-[#93abd3]">—</td>
-                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight text-[#93abd3]">—</td>
-                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight text-[#93abd3]">—</td>
-                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight text-[#93abd3]">—</td>
+                    @php
+                        $presentDays = (int) ($employee->present_days ?? 0);
+                        $absentDays = (int) ($employee->absent_days ?? 0);
+                        $leaveDays = (int) ($employee->leave_days ?? 0);
+                        $recordedDays = $presentDays + $absentDays + $leaveDays;
+                        $attendancePct = $recordedDays > 0
+                            ? round(($presentDays / $recordedDays) * 100, 1)
+                            : 0;
+                        $statusLabel = $presentDays > 0 ? 'Active' : 'No Record';
+                    @endphp
+                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight">{{ $presentDays }}</td>
+                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight">{{ $absentDays }}</td>
+                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight">{{ $leaveDays }}</td>
+                    <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight">{{ $attendancePct }}%</td>
                     <td class="p-4 text-[0.84375rem] text-center border-r border-white/[0.12] font-extralight">
-                        <span class="status-badge">—</span>
+                        <span class="status-badge">{{ $statusLabel }}</span>
                     </td>
                     <td class="p-4 text-[0.84375rem] text-center font-extralight">
                         <a href="{{ route('reports-analytics.employee-attendance', $employee->id) }}" class="inline-block bg-[#132B52] text-white no-underline px-[21px] py-1.5 rounded-xl text-[0.6875rem] transition-all duration-[250ms] hover:bg-[#2e5ca3] hover:-translate-y-px">

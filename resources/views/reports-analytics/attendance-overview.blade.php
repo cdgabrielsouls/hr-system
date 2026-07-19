@@ -147,7 +147,7 @@
                 </div>
                 <div>
                     <div class="text-[11.9px] text-[#E7F0FF]">Present Days</div>
-                    <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
+                    <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $totalPresentDays ?? 0 }}">0</div>
                 </div>
             </div>
 
@@ -160,7 +160,7 @@
                 </div>
                 <div>
                     <div class="text-[11.9px] text-[#E7F0FF]">Absent</div>
-                    <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
+                    <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $totalAbsentDays ?? 0 }}">0</div>
                 </div>
             </div>
 
@@ -172,7 +172,7 @@
         </div>
         <div>
             <div class="text-[11.9px] text-[#E7F0FF]">On Leave</div>
-            <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $employeeCount ?? (method_exists($employees, 'total') ? $employees->total() : count($employees)) }}">0</div>
+            <div class="text-[22.2px] font-bold leading-none mt-0.5 employee-counter" data-target="{{ $totalLeaveDays ?? 0 }}">0</div>
         </div>
     </div>
             </div>
