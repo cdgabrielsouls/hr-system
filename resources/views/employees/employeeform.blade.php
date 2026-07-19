@@ -148,9 +148,7 @@
                         </div>
                     </div>
 
-                    <div class="relative z-[5] flex justify-center items-center pt-[7px]">
-                        <img src="{{ asset('images/logo.png') }}" class="w-[268px] h-auto opacity-95" alt="Nexora Logo">
-                    </div>
+                   
                 </div>
 
             </div>
