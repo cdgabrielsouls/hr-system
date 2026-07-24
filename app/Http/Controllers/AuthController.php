@@ -47,6 +47,7 @@ class AuthController extends Controller
             'employee_name' => $employee->first_name,
             'employee_email' => $employee->company_email,
             'employee_department' => $employee->department,
+            'employee_position' => $employee->position,
         ]);
 
         $department = strtolower(trim($employee->department ?? ''));

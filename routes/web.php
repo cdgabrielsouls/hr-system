@@ -8,6 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeOnboardingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportsAnalyticsController;
+use App\Http\Controllers\EmployeeViewController;
 use App\Models\Employee;
 
 Route::get('/', function () {
@@ -25,8 +26,16 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    Route::get('/employee-dashboard', [DashboardController::class, 'employeeIndex'])
+    Route::get('/employee-dashboard', [EmployeeViewController::class, 'employeeIndex'])
         ->name('employee.dashboard');
+
+    Route::get('/employee-attendance', function () {
+        return view('reports-analytics.empAttendance');
+    })->name('employee.attendance');
+
+    Route::get('/employee-leave', function () {
+        return view('reports-analytics.employee-leave');
+    })->name('employee.leave');
 
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
@@ -84,3 +93,19 @@ Route::get('/clockinout', function () {
 
 Route::post('/clock-in', [AttendanceController::class, 'clockIn'])
     ->name('clockinout.index');
+
+
+    // routes/web.php
+Route::get('/employee-profile', function () {
+    return view('employees.employee-profile');
+})->name('employee.profile');
+
+use App\Http\Controllers\LeaveManagementController;
+
+Route::get('/leave-management', [LeaveManagementController::class, 'index'])
+    ->name('leave-management.index');
+
+
+
+Route::get('/leave-requests', [LeaveManagementController::class, 'leaveRequests'])
+    ->name('leave-requests.index');

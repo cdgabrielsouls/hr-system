@@ -25,6 +25,26 @@ class DashboardController extends Controller
             ->count();
 
         $currentYear = today()->year;
+
+        $monthlyHireStats = Employee::selectRaw('EXTRACT(MONTH FROM created_at)::int as month, COUNT(*) as hires')
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('month')
+            ->get()
+            ->keyBy(function ($item) {
+                return (int) $item->month;
+            });
+
+        $monthlyHireTrend = collect(range(1, 12))->map(function ($month) use ($monthlyHireStats, $currentYear) {
+            $hireCount = (int) ($monthlyHireStats->get($month)?->hires ?? 0);
+
+            return [
+                'month' => Carbon::create($currentYear, $month, 1)->format('M'),
+                'month_name' => Carbon::create($currentYear, $month, 1)->format('F'),
+                'month_number' => $month,
+                'hires' => $hireCount,
+                'exits' => 0,
+            ];
+        });
         $monthStats = Attendance::selectRaw('EXTRACT(MONTH FROM attendance_date)::int as month, COUNT(*) as present_days')
             ->whereYear('attendance_date', $currentYear)
             ->whereNotNull('time_in')
@@ -76,6 +96,7 @@ class DashboardController extends Controller
             'employeeCount',
             'presentToday',
             'monthlyAttendance',
+            'monthlyHireTrend',
             'currentMonth',
             'overallAttendanceRate',
             'totalPresentDaysYear',
@@ -83,12 +104,5 @@ class DashboardController extends Controller
         ));
     }
 
-    public function employeeIndex()
-    {
-        $employeeCount = Employee::count();
-        $isHr = session('employee_role') === 'admin'
-            || strtolower(trim(session('employee_department', ''))) === 'human resources';
-
-        return view('dashboard.employee-dashboard', compact('employeeCount', 'isHr'));
-    }
+    
 }

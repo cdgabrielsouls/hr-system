@@ -74,7 +74,12 @@ class AttendanceController extends Controller
                 return back()->with('error', 'This employee already clocked out today.');
             }
 
-            return back()->with('error', 'This employee already clocked in today.');
+            return redirect()->route('clockinout')
+                ->with('error', 'This employee already clocked in today.')
+                ->with('employee_id', $employeeCode)
+                ->with('clocked_in', true)
+                ->with('clock_in', $attendance->time_in)
+                ->withInput(['employee_id' => $employeeCode]);
         }
 
         $attendance->time_in = $now->format('H:i:s');

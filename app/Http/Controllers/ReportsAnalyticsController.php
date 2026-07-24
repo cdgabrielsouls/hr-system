@@ -147,5 +147,7 @@ class ReportsAnalyticsController extends Controller
         }
 
         return view('reports-analytics.leave', compact('employees'));
+
+        
     }
 }

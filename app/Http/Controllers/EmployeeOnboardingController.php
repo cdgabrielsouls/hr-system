@@ -113,16 +113,24 @@ class EmployeeOnboardingController extends Controller
         }
 
         $request->validate([
-            'birth_certificate' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'curriculum_vitae' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
-            'valid_id' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-        ]);
+    'birth_certificate' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+    'curriculum_vitae' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
+    'valid_id' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+]);
 
-        $data = [
-            'birth_certificate' => $request->file('birth_certificate')->store('documents', 'public'),
-            'curriculum_vitae' => $request->file('curriculum_vitae')->store('documents', 'public'),
-            'valid_id' => $request->file('valid_id')->store('documents', 'public'),
-        ];
+       $data = [
+    'birth_certificate' => $request->hasFile('birth_certificate')
+        ? $request->file('birth_certificate')->store('documents', 'public')
+        : null,
+
+    'curriculum_vitae' => $request->hasFile('curriculum_vitae')
+        ? $request->file('curriculum_vitae')->store('documents', 'public')
+        : null,
+
+    'valid_id' => $request->hasFile('valid_id')
+        ? $request->file('valid_id')->store('documents', 'public')
+        : null,
+];
 
         session(['step3' => $data]);
 
@@ -155,31 +163,27 @@ class EmployeeOnboardingController extends Controller
         return view('employees.onboarding.step4', compact('companyEmailPreview'));
     }
 
-    public function storeStep4(Request $request)
-    {
-        $step1 = session('step1');
-        $step2 = session('step2');
-        $step3 = session('step3');
+   public function storeStep4(Request $request)
+{
+    $step1 = session('step1');
+    $step2 = session('step2');
+    $step3 = session('step3');
 
-        if (! $step1 || ! $step2 || ! $step3) {
-            return redirect()->route('onboarding.step1')
-                ->with('error', 'Your onboarding session expired. Please start again.');
-        }
+    if (! $step1 || ! $step2 || ! $step3) {
+        return redirect()->route('onboarding.step1')
+            ->with('error', 'Your onboarding session expired. Please start again.');
+    }
 
-        $request->validate([
-            'policy_1' => 'accepted',
-            'policy_2' => 'accepted',
-            'policy_3' => 'accepted',
-            'policy_4' => 'accepted',
-            'policy_5' => 'accepted',
-            'policy_6' => 'accepted',
-        ]);
+    $request->validate([
+        'policy_agreement' => 'accepted',
+    ]);
 
-        $companyEmail = self::generateUniqueCompanyEmail(
-            $step1['first_name'],
-            $step1['last_name']
-        );
-        $password = 'NEX-' . Str::upper(Str::random(6));
+    $companyEmail = self::generateUniqueCompanyEmail(
+        $step1['first_name'],
+        $step1['last_name']
+    );
+    $password = 'NEX-' . Str::upper(Str::random(6));
+
 
     $employee = Employee::create([
         'first_name' => $step1['first_name'],
